@@ -17,7 +17,7 @@ const Newsletter = () => {
             placeholder="michael@ymail.com"
             className="p-3 border border-gray-300 rounded-md w-80 text-center focus:outline-none focus:ring-2 focus:ring-gray-200"
           />
-          <button className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors duration-300">
+          <button className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors duration-300 cursor-pointer">
             Subscribe Now
           </button>
         </div>

@@ -8,7 +8,7 @@ import Newsletter from '../components/Newsletter'
 
 const Home = () => {
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
       <Hero />
       <NewArrivalProducts/>
       <DefaultProduct />

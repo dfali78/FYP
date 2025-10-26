@@ -68,7 +68,7 @@ const ProductCard = ({ product }) => {
         <button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className="w-full bg-black text-white text-xs md:text-sm font-medium py-1 md:py-2 rounded-md hover:bg-gray-800 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-black text-white text-xs md:text-sm font-medium py-1 md:py-2 rounded-md hover:bg-gray-800 cursor-pointer transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isAdding ? 'Adding...' : 'Add to Cart'}
         </button>

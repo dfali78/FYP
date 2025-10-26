@@ -25,7 +25,7 @@ const handleClick = () => {
     navigate(`/product/68f27e63659cc07d204dceb6`);
   }; 
   return (
-    <div className="bg-white flex flex-col lg:flex-row relative overflow-hidden h-auto lg:h-[50vh]">
+    <div className="bg-white flex flex-col lg:flex-row relative overflow-hidden h-auto lg:h-[55vh]">
 
       {/* 1. Left Section: Static Image Panel */}
       <div className="relative w-full lg:w-1/2 bg-gray-100 p-0 h-64 lg:h-full">
@@ -43,7 +43,7 @@ const handleClick = () => {
             className="absolute left-0 top-0 bottom-0 w-3/5 md:w-1/2 transform -skew-x-12 origin-top-left bg-white z-0 hidden lg:block"
         ></div>
 
-        <div className="max-w-md w-full space-y-4 lg:space-y-6 relative z-10">
+        <div className="max-w-md w-full space-y-4 lg:space-y-6 relative  z-10">
 
           <p className="text-sm uppercase text-gray-600 font-light tracking-widest">
             {product.category || 'Women Collection'}
@@ -69,7 +69,7 @@ const handleClick = () => {
             </span>
           </div>
 
-          <button className="w-full lg:w-48 py-3 bg-black text-white text-base font-medium uppercase tracking-widest hover:bg-gray-800 transition-colors" onClick={handleClick}  >
+          <button className="w-full lg:w-48 py-3 bg-black text-white text-base font-medium uppercase tracking-widest hover:bg-gray-800 transition-colors cursor-pointer" onClick={handleClick}  >
             Buy Now
           </button>
         </div>

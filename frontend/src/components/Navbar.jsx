@@ -10,14 +10,15 @@ const Navbar = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    setIsLoggedIn(!!token)
+    // Always read token at call-time from localStorage to avoid stale/closed-over values
+    setIsLoggedIn(!!localStorage.getItem('token'))
 
     const fetchUser = async () => {
-      if (token) {
+      const currentToken = localStorage.getItem('token')
+      if (currentToken) {
         try {
           const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/profile`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${currentToken}` }
           })
           if (response.ok) {
             const userData = await response.json()

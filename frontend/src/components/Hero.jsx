@@ -1,6 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 const Hero = () => {
+    const navigate = useNavigate();
+
+      const handleClick = () => {
+        navigate('/shop');
+    }
+
   // Data for the categories (matching the bottom of the image)
   const categories = [
     'ELECTRONICS',
@@ -58,7 +66,7 @@ const Hero = () => {
               <p className="text-xs font-medium tracking-widest text-gray-600 mb-4">
                 NEW COLLECTION
               </p>
-              <button className="px-4 py-2 bg-black text-white text-xs font-medium tracking-widest uppercase hover:bg-gray-800 transition duration-200">
+              <button className="px-4 py-2 bg-black text-white text-xs cursor-pointer font-medium tracking-widest uppercase hover:bg-gray-800 transition duration-200" onClick={handleClick}>
                 SHOP NOW
               </button>
             </div>
