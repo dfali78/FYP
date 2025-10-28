@@ -9,14 +9,20 @@ const Hero = () => {
         navigate('/shop');
     }
 
-  // Data for the categories (matching the bottom of the image)
-  const categories = [
-    'ELECTRONICS',
-    'CLOTHING',
-    'HOME APPLIANCES',
-    'GROCERY',
-    'ACCESSORIES'
-  ]
+    // Data for the categories (matching the bottom of the image)
+    const categories = [
+        'ELECTRONICS',
+        'CLOTHING',
+        'HOME APPLIANCES',
+        'GROCERY',
+        'ACCESSORIES'
+    ];
+
+    // Handler for clicking a category
+    const handleCategoryClick = (category) => {
+        // Navigate to /shop with category as a query param
+        navigate(`/shop?category=${encodeURIComponent(category)}`);
+    };
 
   // Placeholder images for the three-column hero section
   const heroImages = {
@@ -94,18 +100,22 @@ const Hero = () => {
 
       {/* --- */}
 
-      {/* Categories Section (Matching the bottom strip) */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-around items-center space-y-4 md:space-y-0">
-          {categories.map((category, index) => (
-            // In a real app, these would be high-quality SVG/PNG logo images,
-            // but for styling, we'll use text that looks like a clean logo.
-            <div key={index} className="text-lg sm:text-xl md:text-2xl font-serif tracking-widest text-gray-800 opacity-80 hover:opacity-100 transition duration-300 mx-2 md:mx-4">
-              {category}
-            </div>
-          ))}
-        </div>
-      </section>
+            {/* Categories Section (Matching the bottom strip) */}
+            <section className="py-12 px-4">
+                <div className="max-w-6xl mx-auto flex flex-wrap justify-around items-center space-y-4 md:space-y-0">
+                    {categories.map((category, index) => (
+                        <button
+                            key={index}
+                            className="text-lg sm:text-xl md:text-2xl font-serif tracking-widest text-gray-800 opacity-80 hover:opacity-100 transition duration-300 mx-2 md:mx-4 focus:outline-none bg-transparent border-none cursor-pointer"
+                            style={{ background: 'none', border: 'none', padding: 0 }}
+                            onClick={() => handleCategoryClick(category)}
+                            type="button"
+                        >
+                            {category}
+                        </button>
+                    ))}
+                </div>
+            </section>
     </div>
   )
 }
