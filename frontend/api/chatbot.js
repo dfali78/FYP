@@ -1,6 +1,6 @@
-// Vercel Serverless Function to proxy chatbot requests to OpenAI
+// Vercel Serverless Function to proxy chatbot requests to Hugging Face (Free Alternative)
 // Place this file under frontend/api/chatbot.js and deploy to Vercel.
-// Make sure to set OPENAI_API_KEY in the Vercel project environment variables.
+// Make sure to set HUGGINGFACE_API_KEY in the Vercel project environment variables.
 
 export default async function handler(req, res) {
   // Health-check for quick uptime verification
@@ -15,51 +15,58 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, history, maxHistory = 6 } = req.body || {};
+    const { message, history = [] } = req.body || {};
 
-    if (!message && (!Array.isArray(history) || history.length === 0)) {
+    if (!message) {
       return res.status(400).json({ error: 'No message provided' });
     }
 
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (!openaiKey) {
-      console.error('OPENAI_API_KEY not configured in environment');
-      return res.status(500).json({ error: 'OpenAI API key not configured' });
+    const hfKey = process.env.HUGGINGFACE_API_KEY;
+    if (!hfKey) {
+      console.error('HUGGINGFACE_API_KEY not configured in environment');
+      return res.status(500).json({ error: 'Hugging Face API key not configured' });
     }
 
-    // Prepare messages: include a system prompt, then a slice of the conversation history, then the user's current message
-    const systemMsg = { role: 'system', content: 'You are a helpful assistant.' };
-    const historyMessages = Array.isArray(history)
-      ? history.slice(-maxHistory).map((m) => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text }))
-      : [];
+    // Build conversation history for DialoGPT
+    const conversation = history
+      .filter(msg => msg.sender === 'user' || msg.sender === 'bot')
+      .map(msg => msg.text)
+      .join(' ');
 
-    const messages = [systemMsg, ...historyMessages, { role: 'user', content: message }];
+    const inputText = conversation ? `${conversation} ${message}` : message;
 
-    console.log('Chatbot request received', { messagePreview: String(message).slice(0, 120), historyLength: historyMessages.length });
+    console.log('Chatbot request received', { messagePreview: String(message).slice(0, 120), historyLength: history.length });
 
     const payload = {
-      model: 'gpt-3.5-turbo',
-      messages,
-      max_tokens: 250
+      inputs: inputText,
+      parameters: {
+        max_length: 100,
+        do_sample: true,
+        temperature: 0.7
+      }
     };
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${openaiKey}`
+        Authorization: `Bearer ${hfKey}`
       },
       body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('OpenAI returned error:', response.status, errText);
-      return res.status(502).json({ error: 'OpenAI API error', details: errText });
+      console.error('Hugging Face returned error:', response.status, errText);
+      return res.status(502).json({ error: 'Hugging Face API error', details: errText });
     }
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || '';
+    // Hugging Face returns an array of generated texts
+    const generatedText = data?.[0]?.generated_text || '';
+    // Extract the bot's response by removing the input text
+    const reply = generatedText.replace(inputText, '').trim() || 'Sorry, I couldn\'t generate a response.';
+
     console.log('Chatbot reply length', reply.length);
     return res.status(200).json({ reply });
   } catch (err) {

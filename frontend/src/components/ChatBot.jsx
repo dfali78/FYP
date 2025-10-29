@@ -99,7 +99,7 @@ const Chatbot = () => {
       {isOpen && (
         <div style={{ border: '1px solid #ccc', borderRadius: 8, width: 350, padding: 12, position: 'fixed', bottom: 24, right: 24, background: '#fff', zIndex: 1000 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-            <h3 style={{ margin: 0 }}>AI Chatbot</h3>
+            <h3 style={{ margin: 0 }}>Free AI Chatbot</h3>
             <div style={{ display: 'flex', gap: 8 }}>
               <button onClick={() => { setMessages([]); localStorage.removeItem('chat_history'); }} title="Clear chat" style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>🧹</button>
               <button onClick={() => setIsOpen(false)} aria-label="Close chat" style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>✖️</button>
