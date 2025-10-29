@@ -6,6 +6,8 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Blog from './pages/Blog'
+import FAQs from './pages/FAQs'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import AdminLogin from './pages/AdminLogin'
@@ -31,6 +33,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/faqs" element={<FAQs />} />
               <Route path="/track-order" element={<OrderTracking />} />
               <Route path="/order-confirmation" element={<OrderConfirmation />} />
               <Route path="/signup" element={<Signup />} />
