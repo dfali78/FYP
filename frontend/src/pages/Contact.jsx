@@ -10,19 +10,69 @@ const Contact = () => {
     message: ''
   })
 
+  const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [success, setSuccess] = useState('')
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
+    // Clear field error while typing
+    setErrors((prev) => ({ ...prev, [e.target.name]: '' }))
   }
 
-  const handleSubmit = (e) => {
+  const validate = (data) => {
+    const errs = {}
+    // Name: required, min 2, max 100
+    if (!data.name || data.name.trim().length < 2) errs.name = 'Please enter your name (at least 2 characters).'
+    else if (data.name.trim().length > 100) errs.name = 'Name is too long.'
+
+    // Email: required, valid format, max 254
+    const email = (data.email || '').trim()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email) errs.email = 'Please enter your email address.'
+    else if (!emailRegex.test(email)) errs.email = 'Enter a valid email address.'
+    else if (email.length > 254) errs.email = 'Email is too long.'
+
+    // Subject: required, min 3, max 150
+    if (!data.subject || data.subject.trim().length < 3) errs.subject = 'Please add a short subject (3+ characters).'
+    else if (data.subject.trim().length > 150) errs.subject = 'Subject is too long.'
+
+    // Message: required, min 10, max 2000
+    if (!data.message || data.message.trim().length < 10) errs.message = 'Please enter a message (at least 10 characters).'
+    else if (data.message.trim().length > 2000) errs.message = 'Message is too long.'
+
+    return errs
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    setSuccess('')
+    const validation = validate(formData)
+    if (Object.keys(validation).length > 0) {
+      setErrors(validation)
+      // focus the first invalid field if in DOM
+      const firstKey = Object.keys(validation)[0]
+      const el = document.querySelector(`[name="${firstKey}"]`)
+      if (el && typeof el.focus === 'function') el.focus()
+      return
+    }
+
+    try {
+      setSubmitting(true)
+      // TODO: replace with real submission (API call) if available
+      console.log('Form submitted:', formData)
+      setSuccess('Thank you for your message! We will get back to you soon.')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      setErrors({})
+    } catch (err) {
+      console.error('Contact form submission failed', err)
+      setErrors({ form: 'Failed to send message. Please try again later.' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -53,8 +103,10 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  aria-invalid={errors.name ? 'true' : 'false'}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                 />
+                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -65,8 +117,10 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                 />
+                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
@@ -77,8 +131,10 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  aria-invalid={errors.subject ? 'true' : 'false'}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.subject ? 'border-red-500' : 'border-gray-300'}`}
                 />
+                {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
@@ -89,14 +145,29 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows="5"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                  aria-invalid={errors.message ? 'true' : 'false'}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
                 ></textarea>
+                {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
               </div>
+              {errors.form && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-sm text-red-800">{errors.form}</p>
+                </div>
+              )}
+
+              {success && (
+                <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                  <p className="text-sm text-green-800">{success}</p>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors duration-200"
+                disabled={submitting}
+                className={`w-full py-2 px-4 rounded-md transition-colors duration-200 ${submitting ? 'bg-gray-400 text-white cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'}`}
               >
-                Send Message
+                {submitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
