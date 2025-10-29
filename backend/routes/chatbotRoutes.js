@@ -1,8 +1,8 @@
 import express from 'express';
-import { chatWithOpenAI } from '../controllers/chatbotController.js';
+import { chatWithHuggingFace } from '../controllers/chatbotController.js';
 
 const router = express.Router();
 
-router.post('/', chatWithOpenAI);
+router.post('/', chatWithHuggingFace);
 
 export default router;
