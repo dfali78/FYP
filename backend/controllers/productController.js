@@ -122,9 +122,29 @@ export const deleteProduct = async (req, res) => {
 
 export const getProductsByCategory = async (req, res) => {
   const { category } = req.params;
-  const { page = 1, limit = 10, sort } = req.query;
+  const { page = 1, limit = 10, sort, minPrice, maxPrice, search, brand, featured } = req.query;
 
+  // Build query starting from category match
   let query = { category: { $regex: category, $options: 'i' } };
+
+  if (brand) query.brand = brand;
+  if (featured === 'true') query.isFeatured = true;
+
+  // Price filtering (same behavior as getProducts)
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  // Search across name/shortDescription/tags
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { shortDescription: { $regex: search, $options: 'i' } },
+      { tags: { $in: [new RegExp(search, 'i')] } }
+    ];
+  }
 
   let sortOption = {};
   if (sort) {
