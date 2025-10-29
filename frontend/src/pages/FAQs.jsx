@@ -98,7 +98,7 @@ const FAQs = () => {
         </div>
       </div>
 
-      {/* Contact Section */}
+      {/* Contact Section
       <div className="bg-white py-12">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-serif font-bold text-gray-900 mb-4">
@@ -116,7 +116,7 @@ const FAQs = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
