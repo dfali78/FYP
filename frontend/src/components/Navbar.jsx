@@ -10,15 +10,14 @@ const Navbar = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    // Always read token at call-time from localStorage to avoid stale/closed-over values
-    setIsLoggedIn(!!localStorage.getItem('token'))
+    const token = localStorage.getItem('token')
+    setIsLoggedIn(!!token)
 
     const fetchUser = async () => {
-      const currentToken = localStorage.getItem('token')
-      if (currentToken) {
+      if (token) {
         try {
           const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/profile`, {
-            headers: { Authorization: `Bearer ${currentToken}` }
+            headers: { Authorization: `Bearer ${token}` }
           })
           if (response.ok) {
             const userData = await response.json()
@@ -76,6 +75,7 @@ const Navbar = () => {
           {/* <Link to="/new" className="hover:text-black transition-colors duration-200">New Arrival</Link> */}
           <Link to="/about" className="hover:text-black transition-colors duration-200">About</Link>
           <Link to="/contact" className="hover:text-black transition-colors duration-200">Contact Us</Link>
+          <Link to="/track-order" className="hover:text-black transition-colors duration-200">Track Order</Link>
         </div>
 
         {/* Desktop Right Side Buttons */}

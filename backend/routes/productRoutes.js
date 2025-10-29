@@ -19,8 +19,7 @@ router.route("/category/:category")
 // Image upload route
 router.post("/upload", protect, admin, uploadImages, (req, res) => {
   try {
-    // Return absolute URLs so frontend can load images from the backend regardless of origin
-    const imageUrls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
+    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
     res.json({ imageUrls });
   } catch (error) {
     res.status(500).json({ message: "Image upload failed", error: error.message });
