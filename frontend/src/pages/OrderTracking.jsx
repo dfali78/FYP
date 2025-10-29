@@ -27,19 +27,33 @@ const StatusEmoji = styled(Typography)({
 });
 
 const OrderTracking = () => {
-  const [orderId, setOrderId] = useState('');
+  const location = useLocation();
+  const [trackingNumber, setTrackingNumber] = useState(location.state?.trackingNumber || '');
   const [orderStatus, setOrderStatus] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (trackingNumber) {
+      handleTrackOrder();
+    }
+  }, []);
+
   const handleTrackOrder = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setError('');
     setLoading(true);
 
+    // Validate tracking number
+    if (!trackingNumber || trackingNumber.trim() === '') {
+      setError('Please enter your order tracking number');
+      setLoading(false);
+      return;
+    }
+
     try {
       // Using axios without any auth headers since this is a public endpoint
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}/track`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/orders/${trackingNumber.trim()}/track`, {
         validateStatus: function (status) {
           return status < 500; // Accept all status codes less than 500
         }
@@ -80,14 +94,15 @@ const OrderTracking = () => {
         <Box component="form" onSubmit={handleTrackOrder} sx={{ mt: 3 }}>
           <TextField
             fullWidth
-            label="Order ID"
-            value={orderId}
-            onChange={(e) => setOrderId(e.target.value)}
+            label="Order Tracking Number"
+            value={trackingNumber}
+            onChange={(e) => setTrackingNumber(e.target.value)}
             margin="normal"
             required
             error={!!error}
-            placeholder="Enter your order ID"
+            placeholder="Enter your order tracking number (e.g., JAM202500001)"
             disabled={loading}
+            helperText={!error ? "Enter the tracking number provided in your order confirmation" : error}
           />
           
           <Button

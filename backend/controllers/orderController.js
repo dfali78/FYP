@@ -24,9 +24,17 @@ export const createOrder = async (req, res) => {
     return sum + price * item.quantity;
   }, 0);
 
+  // Transform cart items to include current product details
+  const orderItems = cart.items.map(item => ({
+    product: item.product._id,
+    quantity: item.quantity,
+    price: item.product.discountedPrice || item.product.price,
+    name: item.product.name
+  }));
+
   const order = await Order.create({
     user: req.user._id,
-    items: cart.items,
+    items: orderItems,
     totalAmount: total,
     shippingAddress,
     paymentMethod,
@@ -91,14 +99,19 @@ export const getOrderStatus = async (req, res) => {
   const { orderId } = req.params;
 
   try {
-    // Only select necessary fields for public tracking
-    const order = await Order.findById(orderId)
-      .select('status createdAt updatedAt orderNumber')
-      .lean(); // Use lean() for better performance since we don't need the full document
+    // Try to find order by ID or order number
+    const order = await Order.findOne({
+      $or: [
+        { _id: mongoose.Types.ObjectId.isValid(orderId) ? orderId : null },
+        { orderNumber: orderId }
+      ]
+    })
+    .select('status createdAt updatedAt orderNumber statusHistory items totalAmount')
+    .lean();
     
     if (!order) {
       return res.status(404).json({ 
-        message: "Order not found. Please check your order ID and try again."
+        message: "Order not found. Please check your order number and try again."
       });
     }
 
@@ -107,51 +120,77 @@ export const getOrderStatus = async (req, res) => {
       pending: {
         emoji: "🕒",
         message: "Order is being processed",
-        progress: 20
+        progress: 20,
+        description: "We've received your order and are processing it"
       },
       confirmed: {
         emoji: "✅",
         message: "Order confirmed",
-        progress: 40
+        progress: 40,
+        description: "Your order has been confirmed and is being prepared"
       },
       shipped: {
         emoji: "📦",
         message: "Order is on the way",
-        progress: 60
+        progress: 60,
+        description: "Your order has been shipped and is on its way"
       },
       outForDelivery: {
         emoji: "🚚",
         message: "Out for delivery",
-        progress: 80
+        progress: 80,
+        description: "Your order is out for delivery today"
       },
       delivered: {
         emoji: "🎉",
         message: "Order delivered",
-        progress: 100
+        progress: 100,
+        description: "Your order has been delivered successfully"
       },
       cancelled: {
         emoji: "❌",
         message: "Order cancelled",
-        progress: 0
+        progress: 0,
+        description: "This order has been cancelled"
       }
     };
 
     const orderStatus = statusInfo[order.status.toLowerCase()] || {
       emoji: "❓",
-      message: "Unknown status",
-      progress: 0
+      message: "Status unknown",
+      progress: 0,
+      description: "Unable to determine order status"
     };
 
+    // Format the status history
+    const timeline = order.statusHistory.map(history => ({
+      status: history.status,
+      timestamp: history.timestamp,
+      note: history.note
+    }));
+
     res.json({
-      orderId: order._id,
+      orderNumber: order.orderNumber,
       status: order.status,
       emoji: orderStatus.emoji,
       message: orderStatus.message,
+      description: orderStatus.description,
       progress: orderStatus.progress,
+      timeline: timeline,
       createdAt: order.createdAt,
-      updatedAt: order.updatedAt
+      updatedAt: order.updatedAt,
+      totalAmount: order.totalAmount,
+      items: order.items.map(item => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price
+      }))
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Order tracking error:', error);
+    res.status(500).json({ 
+      message: "Unable to track order. Please try again or contact support.",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };

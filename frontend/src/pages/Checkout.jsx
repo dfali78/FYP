@@ -60,13 +60,19 @@ const Checkout = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, formData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/orders`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       // Clear cart after successful order
       await fetchCart();
-      navigate('/', { state: { message: 'Order placed successfully!' } });
+      
+      // Navigate to order confirmation page with order details
+      navigate('/order-confirmation', { 
+        state: { 
+          order: response.data
+        }
+      });
     } catch (err) {
       console.error('Failed to place order:', err);
       setError(err.response?.data?.message || 'Failed to place order');
