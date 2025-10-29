@@ -9,6 +9,9 @@ const OrderTracking = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Normalize backend URL so callers don't accidentally create duplicate '/api/api' paths
+  const _rawBackend = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || '';
+  const backendBase = _rawBackend.endsWith('/api') ? _rawBackend.slice(0, -4) : _rawBackend;
   useEffect(() => {
     if (trackingNumber) {
       handleTrackOrder();
@@ -28,7 +31,8 @@ const OrderTracking = () => {
     }
 
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/${trackingNumber.trim()}/track`);
+      // Use normalized backendBase and append the API path once
+      const response = await axios.get(`${backendBase}/api/orders/${trackingNumber.trim()}/track`);
       
       if (response.data && response.status === 200) {
         setOrderStatus(response.data);
