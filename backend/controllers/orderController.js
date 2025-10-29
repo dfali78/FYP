@@ -32,12 +32,16 @@ export const createOrder = async (req, res) => {
     name: item.product.name
   }));
 
+  // Generate order number first
+  const orderNumber = await Order.generateOrderNumber();
+
   const order = await Order.create({
     user: req.user._id,
     items: orderItems,
     totalAmount: total,
     shippingAddress,
     paymentMethod,
+    orderNumber, // Set the generated order number
   });
 
   // Clear the cart after successful order creation

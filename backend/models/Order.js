@@ -36,13 +36,30 @@ const orderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Generate order number
-orderSchema.pre('save', async function(next) {
+// Static method to generate next order number
+orderSchema.statics.generateOrderNumber = async function() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  // Find the latest order from today
+  const latestOrder = await this.findOne({
+    orderNumber: new RegExp(`JAM${year}${month}${day}`)
+  }).sort({ orderNumber: -1 });
+
+  let sequence = '0001';
+  if (latestOrder) {
+    const currentSequence = parseInt(latestOrder.orderNumber.slice(-4));
+    sequence = String(currentSequence + 1).padStart(4, '0');
+  }
+
+  return `JAM${year}${month}${day}${sequence}`;
+};
+
+// Add initial status to history on save
+orderSchema.pre('save', function(next) {
   if (this.isNew) {
-    const count = await mongoose.model("Order").countDocuments();
-    const date = new Date();
-    this.orderNumber = `JAM${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(count + 1).padStart(4, '0')}`;
-    
-    // Add initial status to history
     this.statusHistory = [{
       status: this.status,
       timestamp: new Date(),
