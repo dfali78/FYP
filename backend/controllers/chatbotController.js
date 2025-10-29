@@ -1,7 +1,9 @@
-const axios = require('axios');
-require('dotenv').config();
+import axios from 'axios';
+import dotenv from 'dotenv';
 
-exports.chatWithOpenAI = async (req, res) => {
+dotenv.config();
+
+export const chatWithOpenAI = async (req, res) => {
   const userMessage = req.body.message;
   if (!userMessage) return res.status(400).json({ error: 'No message provided.' });
 
@@ -15,14 +17,15 @@ exports.chatWithOpenAI = async (req, res) => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
           'Content-Type': 'application/json'
         }
       }
     );
-    const reply = response.data.choices[0].message.content;
+    const reply = response.data.choices?.[0]?.message?.content || '';
     res.json({ reply });
   } catch (error) {
+    console.error('OpenAI error:', error?.response?.data || error.message || error);
     res.status(500).json({ error: 'Failed to get response from OpenAI.' });
   }
 };

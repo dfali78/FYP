@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import { chatWithOpenAI } from '../controllers/chatbotController.js';
+
 const router = express.Router();
-const { chatWithOpenAI } = require('../controllers/chatbotController');
 
 router.post('/', chatWithOpenAI);
 
-module.exports = router;
+export default router;
