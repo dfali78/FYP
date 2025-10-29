@@ -1,31 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Box, 
-  Container, 
-  TextField, 
-  Button, 
-  Typography, 
-  LinearProgress, 
-  Paper, 
-  Alert,
-  CircularProgress
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(4),
-  marginTop: theme.spacing(4),
-  textAlign: 'center',
-  maxWidth: '600px',
-  margin: '40px auto',
-}));
-
-const StatusEmoji = styled(Typography)({
-  fontSize: '3rem',
-  marginBottom: '1rem',
-});
+import { useLocation } from 'react-router-dom';
 
 const OrderTracking = () => {
   const location = useLocation();
@@ -94,92 +69,93 @@ const OrderTracking = () => {
   };
 
   return (
-    <Container>
-      <StyledPaper elevation={3}>
-        <Typography variant="h4" gutterBottom>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl mx-auto text-center">
+        <h1 className="text-3xl font-light text-gray-900 mb-6">
           Track Your Order
-        </Typography>
-        
-        <Box component="form" onSubmit={handleTrackOrder} sx={{ mt: 3 }}>
-          <TextField
-            fullWidth
-            label="Order Tracking Number"
-            value={trackingNumber}
-            onChange={(e) => setTrackingNumber(e.target.value)}
-            margin="normal"
-            required
-            error={!!error}
-            placeholder="Enter your order tracking number (e.g., JAM202500001)"
-            disabled={loading}
-            helperText={!error ? "Enter the tracking number provided in your order confirmation" : error}
-          />
-          
-          <Button
+        </h1>
+
+        <form onSubmit={handleTrackOrder} className="mt-6">
+          <div className="mb-4">
+            <label htmlFor="trackingNumber" className="block text-sm font-medium text-gray-700 mb-2">
+              Order Tracking Number
+            </label>
+            <input
+              id="trackingNumber"
+              type="text"
+              value={trackingNumber}
+              onChange={(e) => setTrackingNumber(e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black ${
+                error ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="Enter your order tracking number (e.g., JAM202500001)"
+              disabled={loading}
+              required
+            />
+            <p className={`mt-1 text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
+              {error || "Enter the tracking number provided in your order confirmation"}
+            </p>
+          </div>
+
+          <button
             type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2, mb: 2 }}
+            className={`w-full py-2 px-4 bg-black text-white font-medium uppercase tracking-widest hover:bg-gray-800 transition duration-200 rounded-md ${
+              loading || !trackingNumber.trim() ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             disabled={loading || !trackingNumber.trim()}
           >
             {loading ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <CircularProgress size={20} color="inherit" />
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Tracking...</span>
-              </Box>
+              </div>
             ) : (
               'TRACK ORDER'
             )}
-          </Button>
-        </Box>
+          </button>
+        </form>
 
         {error && (
-          <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
-            {error}
-          </Alert>
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-800">{error}</p>
+          </div>
         )}
 
         {orderStatus && (
-          <Box sx={{ mt: 4 }}>
-            <StatusEmoji>{orderStatus.emoji || '📦'}</StatusEmoji>
-            
-            <Typography variant="h6" gutterBottom>
+          <div className="mt-8">
+            <div className="text-6xl mb-4">{orderStatus.emoji || '📦'}</div>
+
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
               {orderStatus.message || 'Status not available'}
-            </Typography>
+            </h2>
 
-            <Box sx={{ mt: 2, mb: 4 }}>
-              <LinearProgress 
-                variant="determinate" 
-                value={orderStatus.progress || 0} 
-                sx={{ 
-                  height: 10, 
-                  borderRadius: 5,
-                  backgroundColor: 'rgba(0,0,0,0.1)',
-                  '& .MuiLinearProgress-bar': {
-                    backgroundColor: '#4CAF50'
-                  }
-                }}
-              />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+            <div className="mt-4 mb-6">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-green-500 h-2.5 rounded-full transition-all duration-300"
+                  style={{ width: `${orderStatus.progress || 0}%` }}
+                ></div>
+              </div>
+              <p className="mt-2 text-sm text-gray-600">
                 {orderStatus.progress || 0}% Complete
-              </Typography>
-            </Box>
+              </p>
+            </div>
 
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                Order Status: {orderStatus.status || 'Unknown'}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Order Created: {formatDate(orderStatus.createdAt)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Last Updated: {formatDate(orderStatus.updatedAt)}
-              </Typography>
-            </Box>
-          </Box>
+            <div className="mt-4 text-left">
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Order Status:</span> {orderStatus.status || 'Unknown'}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Order Created:</span> {formatDate(orderStatus.createdAt)}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Last Updated:</span> {formatDate(orderStatus.updatedAt)}
+              </p>
+            </div>
+          </div>
         )}
-      </StyledPaper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

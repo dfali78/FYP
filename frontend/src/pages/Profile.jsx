@@ -132,15 +132,24 @@ const Profile = () => {
             ) : (
               <div className="space-y-6">
                 {orders.map((order) => (
-                  <div key={order._id} className="bg-gray-50 rounded-lg p-6">
+                    <div key={order._id} className="bg-gray-50 rounded-lg p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-medium text-gray-900">
-                          Order #{order._id.slice(-8)}
+                          Order #{order.orderNumber || order._id.slice(-8)}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 mt-1">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </p>
+                        {order.orderNumber && (
+                          <Link
+                            to={`/track-order`}
+                            state={{ trackingNumber: order.orderNumber }}
+                            className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mt-2 inline-block"
+                          >
+                            Track Order →
+                          </Link>
+                        )}
                       </div>
                       <div className="text-right">
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
