@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import chatbotRoutes from "./routes/chatbotRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 // Error handler
 app.use(errorHandler);

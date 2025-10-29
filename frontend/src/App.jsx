@@ -18,6 +18,7 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import OrderTracking from './pages/OrderTracking'
 import OrderConfirmation from './pages/OrderConfirmation'
 import './App.css'
+import Chatbot from './components/ChatBot'
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <Chatbot />
         </div>
       </Router>
     </CartProvider>
