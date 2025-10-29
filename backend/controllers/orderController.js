@@ -1,6 +1,7 @@
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
+import mongoose from "mongoose";
 
 export const createOrder = async (req, res) => {
   const { shippingAddress, paymentMethod } = req.body;
@@ -103,13 +104,13 @@ export const getOrderStatus = async (req, res) => {
   const { orderId } = req.params;
 
   try {
-    // Try to find order by ID or order number
-    const order = await Order.findOne({
-      $or: [
-        { _id: mongoose.Types.ObjectId.isValid(orderId) ? orderId : null },
-        { orderNumber: orderId }
-      ]
-    })
+    // First try to find by order number since that's what we expect
+    let order = await Order.findOne({ orderNumber: orderId });
+    
+    // If not found and the ID looks like a MongoDB ObjectId, try finding by ID
+    if (!order && mongoose.Types.ObjectId.isValid(orderId)) {
+      order = await Order.findById(orderId);
+    }
     .select('status createdAt updatedAt orderNumber statusHistory items totalAmount')
     .lean();
     

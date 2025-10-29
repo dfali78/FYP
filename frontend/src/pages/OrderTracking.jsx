@@ -53,24 +53,32 @@ const OrderTracking = () => {
     }
 
     try {
-      // Using axios without any auth headers since this is a public endpoint
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/orders/${trackingNumber.trim()}/track`, {
-        validateStatus: function (status) {
-          return status < 500; // Accept all status codes less than 500
-        }
-      });
-
-      if (response.status === 304) {
-        setError('Order information has not changed');
-      } else if (response.status === 404) {
-        setError('Order not found. Please check your order ID and try again.');
-      } else if (response.status === 200) {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/${trackingNumber.trim()}/track`);
+      
+      if (response.data && response.status === 200) {
         setOrderStatus(response.data);
       } else {
         setError('Unable to fetch order status. Please try again later.');
       }
     } catch (err) {
-      setError('Failed to connect to the server. Please check your internet connection and try again.');
+      console.error('Order tracking error:', err);
+      
+      if (err.response) {
+        // The server responded with a status code that falls out of the range of 2xx
+        if (err.response.status === 404) {
+          setError('Order not found. Please check your tracking number and try again.');
+        } else if (err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+        } else {
+          setError('Unable to fetch order status. Please try again later.');
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError('Failed to connect to the server. Please check your internet connection and try again.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError('An error occurred while tracking your order. Please try again later.');
+      }
       setOrderStatus(null);
     } finally {
       setLoading(false);
