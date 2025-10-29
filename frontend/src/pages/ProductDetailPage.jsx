@@ -256,11 +256,34 @@ const ProductDetailPage = () => {
 
           {/* Payment Icons */}
           <div className="pt-4 bg-gray-50 p-4 rounded-md text-center">
-            <div className="flex justify-center space-x-2 mb-2">
-              <div className="w-8 h-6 bg-blue-600 rounded"></div>
-              <div className="w-8 h-6 bg-red-500 rounded"></div>
-              <div className="w-8 h-6 bg-yellow-500 rounded"></div>
-              <div className="w-8 h-6 bg-green-600 rounded"></div>
+            <div className="flex justify-center items-center space-x-3 mb-2">
+              {/* VISA */}
+              <svg role="img" aria-label="Visa" viewBox="0 0 64 40" className="w-12 h-6">
+                <rect width="64" height="40" rx="4" fill="#1A56DB" />
+                <text x="32" y="26" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontSize="16" fontWeight="700" fill="white">VISA</text>
+              </svg>
+
+              {/* MasterCard - two overlapping circles */}
+              <svg role="img" aria-label="Mastercard" viewBox="0 0 64 40" className="w-12 h-6">
+                <rect width="64" height="40" rx="4" fill="#fff" />
+                <g transform="translate(12,8)">
+                  <circle cx="12" cy="12" r="12" fill="#EB001B" />
+                  <circle cx="28" cy="12" r="12" fill="#F79E1B" />
+                </g>
+              </svg>
+
+              {/* American Express (AMEX) */}
+              <svg role="img" aria-label="American Express" viewBox="0 0 64 40" className="w-12 h-6">
+                <rect width="64" height="40" rx="4" fill="#2E8BC0" />
+                <text x="32" y="26" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontSize="12" fontWeight="700" fill="white">AMEX</text>
+              </svg>
+
+              {/* PayPal */}
+              <svg role="img" aria-label="PayPal" viewBox="0 0 64 40" className="w-12 h-6">
+                <rect width="64" height="40" rx="4" fill="#003087" />
+                <text x="32" y="26" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontSize="12" fontWeight="700" fill="#FFC439">PAY</text>
+                <text x="32" y="34" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontSize="8" fontWeight="700" fill="#fff">PAL</text>
+              </svg>
             </div>
             <p className="text-xs text-gray-600">
               Guarantee safe & secure checkout
