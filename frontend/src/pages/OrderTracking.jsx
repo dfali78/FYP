@@ -112,7 +112,7 @@ const OrderTracking = () => {
             color="primary"
             fullWidth
             sx={{ mt: 2, mb: 2 }}
-            disabled={loading || !orderId}
+            disabled={loading || !trackingNumber.trim()}
           >
             {loading ? (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
