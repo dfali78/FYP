@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       }
     };
 
-    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', {
+    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-small', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
