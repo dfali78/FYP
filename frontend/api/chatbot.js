@@ -46,13 +46,24 @@ export default async function handler(req, res) {
       }
     };
 
-    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-small', {
+    const response = await fetch('https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${hfKey}`
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        inputs: {
+          past_user_inputs: history.filter(msg => msg.sender === 'user').map(msg => msg.text),
+          generated_responses: history.filter(msg => msg.sender === 'bot').map(msg => msg.text),
+          text: message
+        },
+        parameters: {
+          max_length: 100,
+          do_sample: true,
+          temperature: 0.7
+        }
+      })
     });
 
     if (!response.ok) {
