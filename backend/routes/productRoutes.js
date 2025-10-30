@@ -19,7 +19,8 @@ router.route("/category/:category")
 // Image upload route
 router.post("/upload", protect, admin, uploadImages, (req, res) => {
   try {
-    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const imageUrls = req.files.map(file => `${baseUrl}/uploads/${file.filename}`);
     res.json({ imageUrls });
   } catch (error) {
     res.status(500).json({ message: "Image upload failed", error: error.message });
