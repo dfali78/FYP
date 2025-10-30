@@ -19,13 +19,13 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Hero Section: Smaller, Responsive Three-Column Layout */}
       {/* Reduced vertical padding (py-1, py-2) and set a max height for the container on large screens */}
-      <section className="px-4 py-1 md:py-2 max-w-5xl mx-auto">
-        <div className="flex justify-center items-center lg:max-h-[70vh] lg:overflow-hidden">
+      <section className="px-4 py-8 md:py-12 max-w-6xl mx-auto slide-up">
+        <div className="flex justify-center items-center lg:max-h-[80vh] lg:overflow-hidden">
           {/* Left Column (Image) */}
-          <div className="hidden lg:block w-1/4 h-[400px] bg-gray-100 overflow-hidden rounded-lg shadow-xl mr-2">
+          <div className="hidden lg:block w-1/4 h-[450px] bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden rounded-2xl shadow-2xl mr-4 card">
             <img
               src={heroImages.left}
               alt="Fashion model sitting"
@@ -34,10 +34,10 @@ const Hero = () => {
           </div>
 
           {/* Center Column (Text & Nested Images) */}
-          <div className="w-full lg:w-2/4 h-full flex flex-col items-center justify-center p-4">
+          <div className="w-full lg:w-2/4 h-full flex flex-col items-center justify-center p-6">
             
             {/* Top Center Image */}
-            <div className="w-full h-[120px] mb-2 overflow-hidden rounded-lg shadow-lg">
+            <div className="w-full h-[140px] mb-4 overflow-hidden rounded-xl shadow-xl card">
               <img
                 src={heroImages.topCenter}
                 alt="New collection models"
@@ -46,25 +46,25 @@ const Hero = () => {
             </div>
 
             {/* Main Text Block */}
-            <div className="text-center my-4">
-              <h1 className="text-4xl sm:text-5xl font-light text-gray-900 tracking-tight leading-none mb-2">
+            <div className="text-center my-6 bounce-in">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold gradient-text tracking-tight leading-none mb-4">
                 ULTIMATE
               </h1>
-              <h2 className="text-5xl sm:text-6xl font-extralight text-gray-900 tracking-widest mb-2" style={{
+              <h2 className="text-6xl sm:text-7xl lg:text-8xl font-extralight gradient-text tracking-widest mb-4" style={{
                 letterSpacing: '0.25em'
               }}>
                 SALE
               </h2>
-              <p className="text-xs font-medium tracking-widest text-gray-600 mb-4">
+              <p className="text-sm font-semibold tracking-widest text-gray-700 mb-6 uppercase">
                 NEW COLLECTION
               </p>
-              <button className="px-4 py-2 bg-black text-white text-xs font-medium tracking-widest uppercase hover:bg-gray-800 transition duration-200">
+              <button className="btn-primary text-sm font-bold tracking-widest uppercase px-8 py-3">
                 SHOP NOW
               </button>
             </div>
 
             {/* Bottom Center Image */}
-            <div className="w-full h-[100px] mt-2 overflow-hidden rounded-lg shadow-lg">
+            <div className="w-full h-[120px] mt-4 overflow-hidden rounded-xl shadow-xl card">
               <img
                 src={heroImages.bottomCenter}
                 alt="Sale models laughing"
@@ -74,7 +74,7 @@ const Hero = () => {
           </div>
 
           {/* Right Column (Image) */}
-          <div className="hidden lg:block w-1/4 h-[400px] bg-gray-100 overflow-hidden rounded-lg shadow-xl ml-2">
+          <div className="hidden lg:block w-1/4 h-[450px] bg-gradient-to-br from-purple-100 to-pink-100 overflow-hidden rounded-2xl shadow-2xl ml-4 card">
             <img
               src={heroImages.right}
               alt="Fashion model on stool"
@@ -87,12 +87,12 @@ const Hero = () => {
       {/* --- */}
 
       {/* Categories Section (Matching the bottom strip) */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-around items-center space-y-4 md:space-y-0">
+      <section className="py-16 px-4 glass mx-4 rounded-3xl my-8">
+        <div className="max-w-6xl mx-auto flex flex-wrap justify-around items-center space-y-6 md:space-y-0">
           {categories.map((category, index) => (
             // In a real app, these would be high-quality SVG/PNG logo images,
             // but for styling, we'll use text that looks like a clean logo.
-            <div key={index} className="text-lg sm:text-xl md:text-2xl font-serif tracking-widest text-gray-800 opacity-80 hover:opacity-100 transition duration-300 mx-2 md:mx-4">
+            <div key={index} className="text-xl sm:text-2xl md:text-3xl font-bold tracking-widest gradient-text opacity-90 hover:opacity-100 transition-all duration-300 mx-4 md:mx-6 hover:scale-105 cursor-pointer">
               {category}
             </div>
           ))}
