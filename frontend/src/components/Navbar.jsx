@@ -61,10 +61,10 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="glass py-4 relative fade-in">
+    <nav className="bg-white py-4 shadow-sm relative">
       <div className="container mx-auto flex justify-between items-center px-6">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold gradient-text" onClick={closeMenu}>
+        <Link to="/" className="text-2xl font-serif font-semibold text-gray-800" onClick={closeMenu}>
           JAM Store
         </Link>
 
@@ -120,7 +120,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/signup"
-                className="btn-primary"
+                className="bg-black text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-900 transition-all duration-200"
               >
                 Sign Up
               </Link>
@@ -203,7 +203,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/signup"
-                  className="flex items-center justify-center btn-primary"
+                  className="flex items-center justify-center bg-black text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-900 transition-all duration-200"
                   onClick={closeMenu}
                 >
                   Sign Up
