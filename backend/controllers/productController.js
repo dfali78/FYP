@@ -166,3 +166,46 @@ export const getProductsByCategory = async (req, res) => {
     totalProducts: total
   });
 };
+
+export const getProductsBySubcategory = async (req, res) => {
+  const { subcategory } = req.params;
+  const { page = 1, limit = 10, sort, minPrice, maxPrice, search, brand, featured } = req.query;
+
+  // Build query starting from subcategory match
+  let query = { subcategory: { $regex: subcategory, $options: 'i' } };
+
+  if (brand) query.brand = brand;
+  if (featured === 'true') query.isFeatured = true;
+
+  // Price filtering (same behavior as getProducts)
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  // Search across name/shortDescription/tags
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { shortDescription: { $regex: search, $options: 'i' } },
+      { tags: { $in: [new RegExp(search, 'i')] } }
+    ];
+  }
+
+  let sortOption = {};
+  if (sort) {
+    sortOption = sort.startsWith('-') ? { [sort.slice(1)]: -1 } : { [sort]: 1 };
+  }
+
+  const skip = (page - 1) * limit;
+  const products = await Product.find(query).sort(sortOption).skip(skip).limit(Number(limit));
+  const total = await Product.countDocuments(query);
+
+  res.json({
+    products,
+    totalPages: Math.ceil(total / limit),
+    currentPage: Number(page),
+    totalProducts: total
+  });
+};

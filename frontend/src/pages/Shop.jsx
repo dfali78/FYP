@@ -110,51 +110,37 @@ const Shop = () => {
           />
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === category
-                  ? 'bg-black text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
+        {/* Category and Subcategory Dropdowns */}
+        <div className="flex flex-wrap gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
             >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Subcategory Pills */}
-        {selectedCategory !== 'ALL' && subcategories[selectedCategory] && (
-          <div className="flex flex-wrap gap-2 mb-6">
-            <button
-              onClick={() => handleSubcategoryChange('')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedSubcategory === ''
-                  ? 'bg-gray-600 text-white'
-                  : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-              }`}
-            >
-              All {selectedCategory}
-            </button>
-            {subcategories[selectedCategory].map((subcategory) => (
-              <button
-                key={subcategory}
-                onClick={() => handleSubcategoryChange(subcategory)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedSubcategory === subcategory
-                    ? 'bg-gray-600 text-white'
-                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                }`}
-              >
-                {subcategory}
-              </button>
-            ))}
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
           </div>
-        )}
+
+          {selectedCategory !== 'ALL' && subcategories[selectedCategory] && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+              <select
+                value={selectedSubcategory}
+                onChange={(e) => handleSubcategoryChange(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                <option value="">All Subcategories</option>
+                {subcategories[selectedCategory].map(subcategory => (
+                  <option key={subcategory} value={subcategory}>{subcategory}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
 
         {/* Filters and Sort */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">

@@ -16,6 +16,9 @@ router.route("/:id")
 router.route("/category/:category")
   .get(getProductsByCategory);
 
+router.route("/subcategory/:subcategory")
+  .get(getProductsBySubcategory);
+
 // Image upload route
 router.post("/upload", protect, admin, uploadImages, (req, res) => {
   try {
