@@ -110,37 +110,57 @@ const Shop = () => {
           />
         </div>
 
-        {/* Category and Subcategory Dropdowns */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-            >
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-
-          {selectedCategory !== 'ALL' && subcategories[selectedCategory] && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
-              <select
-                value={selectedSubcategory}
-                onChange={(e) => handleSubcategoryChange(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+        {/* Category Pills */}
+        <div className="mb-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-3">Categories</h3>
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-black text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
               >
-                <option value="">All Subcategories</option>
-                {subcategories[selectedCategory].map(subcategory => (
-                  <option key={subcategory} value={subcategory}>{subcategory}</option>
-                ))}
-              </select>
-            </div>
-          )}
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* Subcategory Pills */}
+        {selectedCategory !== 'ALL' && subcategories[selectedCategory] && (
+          <div className="mb-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-3">{selectedCategory} Subcategories</h3>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => handleSubcategoryChange('')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedSubcategory === ''
+                    ? 'bg-gray-600 text-white'
+                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                }`}
+              >
+                All {selectedCategory}
+              </button>
+              {subcategories[selectedCategory].map((subcategory) => (
+                <button
+                  key={subcategory}
+                  onClick={() => handleSubcategoryChange(subcategory)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    selectedSubcategory === subcategory
+                      ? 'bg-gray-600 text-white'
+                      : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                  }`}
+                >
+                  {subcategory}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Filters and Sort */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
