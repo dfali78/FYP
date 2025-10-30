@@ -12,6 +12,7 @@ const ProductManagement = () => {
   const [formData, setFormData] = useState({
     name: '',
     category: '',
+    subcategory: '',
     brand: '',
     price: '',
     discountedPrice: '',
@@ -142,6 +143,7 @@ const ProductManagement = () => {
     setFormData({
       name: product.name,
       category: product.category,
+      subcategory: product.subcategory || '',
       brand: product.brand,
       price: product.price.toString(),
       discountedPrice: product.discountedPrice ? product.discountedPrice.toString() : '',
@@ -159,6 +161,7 @@ const ProductManagement = () => {
     setFormData({
       name: '',
       category: '',
+      subcategory: '',
       brand: '',
       price: '',
       discountedPrice: '',
@@ -213,13 +216,74 @@ const ProductManagement = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <input
-                type="text"
+              <select
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value, subcategory: '' })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
                 required
-              />
+              >
+                <option value="">Select Category</option>
+                <option value="ELECTRONICS">Electronics</option>
+                <option value="CLOTHING">Clothing</option>
+                <option value="HOME APPLIANCES">Home Appliances</option>
+                <option value="GROCERY">Grocery</option>
+                <option value="ACCESSORIES">Accessories</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+              <select
+                value={formData.subcategory}
+                onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                <option value="">Select Subcategory</option>
+                {formData.category === 'ELECTRONICS' && (
+                  <>
+                    <option value="Smartphones">Smartphones</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="Tablets">Tablets</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Audio">Audio</option>
+                  </>
+                )}
+                {formData.category === 'CLOTHING' && (
+                  <>
+                    <option value="Men's Wear">Men's Wear</option>
+                    <option value="Women's Wear">Women's Wear</option>
+                    <option value="Kids' Wear">Kids' Wear</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Accessories">Accessories</option>
+                  </>
+                )}
+                {formData.category === 'HOME APPLIANCES' && (
+                  <>
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Laundry">Laundry</option>
+                    <option value="Cleaning">Cleaning</option>
+                    <option value="Heating">Heating</option>
+                    <option value="Cooling">Cooling</option>
+                  </>
+                )}
+                {formData.category === 'GROCERY' && (
+                  <>
+                    <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Bakery">Bakery</option>
+                    <option value="Beverages">Beverages</option>
+                    <option value="Snacks">Snacks</option>
+                  </>
+                )}
+                {formData.category === 'ACCESSORIES' && (
+                  <>
+                    <option value="Jewelry">Jewelry</option>
+                    <option value="Bags">Bags</option>
+                    <option value="Watches">Watches</option>
+                    <option value="Sunglasses">Sunglasses</option>
+                    <option value="Hats">Hats</option>
+                  </>
+                )}
+              </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
