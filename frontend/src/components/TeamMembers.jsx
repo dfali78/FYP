@@ -3,25 +3,24 @@ import React from 'react'
 const TeamMembers = () => {
   const members = [
     {
-      name: 'John Doe',
-      rollNumber: 'CS-001',
-      age: 22,
+      name: 'Javeria Sarwar',
+      rollNumber: 'BSCS-F23-115',
       contribution: 'Frontend Development and UI/UX Design',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+      image: 'https://img.pikbest.com/png-images/20241231/simple-black-and-white-female-avatar-icon_11326880.png!sw800'
     },
     {
-      name: 'Jane Smith',
-      rollNumber: 'CS-002',
-      age: 21,
+      name: 'Syed Mujtaba Raza',
+      rollNumber: 'BSCS-F23-66',
+     
       contribution: 'Backend Development and Database Management',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMM-LIxomqumnU4m-kKaylG1gfC69XzkQnd6q1lbURhRQes-uFiGPE2OBniHCEE4ErsaY&usqp=CAU'
     },
     {
-      name: 'Mike Johnson',
-      rollNumber: 'CS-003',
-      age: 23,
+      name: 'Muhammad Ana',
+      rollNumber: 'BSCS-F23-83',
+      
       contribution: 'Project Management and Testing',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMM-LIxomqumnU4m-kKaylG1gfC69XzkQnd6q1lbURhRQes-uFiGPE2OBniHCEE4ErsaY&usqp=CAU'
     }
   ]
 
