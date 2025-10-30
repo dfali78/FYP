@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../contexts/CartContext';
 
 const Shop = () => {
+  const location = useLocation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,6 +27,22 @@ const Shop = () => {
     GROCERY: ['Fruits & Vegetables', 'Dairy', 'Bakery', 'Beverages', 'Snacks'],
     ACCESSORIES: ['Jewelry', 'Bags', 'Watches', 'Sunglasses', 'Hats']
   };
+
+  // Parse query parameters on component mount and location change
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const category = urlParams.get('category');
+    const subcategory = urlParams.get('subcategory');
+
+    if (category) {
+      setSelectedCategory(category);
+      setSelectedSubcategory(subcategory || '');
+    } else {
+      setSelectedCategory('ALL');
+      setSelectedSubcategory('');
+    }
+    setCurrentPage(1);
+  }, [location.search]);
 
   const fetchProducts = async () => {
     setLoading(true);

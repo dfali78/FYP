@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
+import categories from '../constants/categories'
 
 const Navbar = () => {
   const { totalQuantity } = useCart()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false)
 
   const [user, setUser] = useState(null)
 
@@ -71,7 +73,51 @@ const Navbar = () => {
         {/* Desktop Center Nav Links */}
         <div className="hidden md:flex space-x-8 text-gray-600 font-medium">
           <Link to="/" className="hover:text-black transition-colors duration-200">Home</Link>
-          <Link to="/shop" className="hover:text-black transition-colors duration-200">Shop</Link>
+          <div className="relative">
+            <button
+              onMouseEnter={() => setIsShopDropdownOpen(true)}
+              onMouseLeave={() => setIsShopDropdownOpen(false)}
+              className="hover:text-black transition-colors duration-200 flex items-center"
+            >
+              Shop
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {isShopDropdownOpen && (
+              <div
+                className="absolute top-full left-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 z-50 min-w-48"
+                onMouseEnter={() => setIsShopDropdownOpen(true)}
+                onMouseLeave={() => setIsShopDropdownOpen(false)}
+              >
+                {categories.map((category) => (
+                  <div key={category.value} className="group relative">
+                    <Link
+                      to={`/shop?category=${category.value}`}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-black"
+                      onClick={() => setIsShopDropdownOpen(false)}
+                    >
+                      {category.label}
+                    </Link>
+                    {category.subcategories.length > 0 && (
+                      <div className="absolute left-full top-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 min-w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
+                        {category.subcategories.map((subcategory) => (
+                          <Link
+                            key={subcategory}
+                            to={`/shop?category=${category.value}&subcategory=${encodeURIComponent(subcategory)}`}
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-black"
+                            onClick={() => setIsShopDropdownOpen(false)}
+                          >
+                            {subcategory}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           {/* <Link to="/new" className="hover:text-black transition-colors duration-200">New Arrival</Link> */}
           <Link to="/about" className="hover:text-black transition-colors duration-200">About</Link>
           <Link to="/contact" className="hover:text-black transition-colors duration-200">Contact Us</Link>
