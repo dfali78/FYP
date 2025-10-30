@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   category: { type: String, required: true },
+  subcategory: { type: String }, // Optional subcategory field
   brand: { type: String },
   price: { type: Number, required: true }, // Original price
   discountedPrice: { type: Number }, // Optional discounted price

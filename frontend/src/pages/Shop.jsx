@@ -8,6 +8,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
@@ -16,6 +17,14 @@ const Shop = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const categories = ['ALL', 'ELECTRONICS', 'CLOTHING', 'HOME APPLIANCES', 'GROCERY', 'ACCESSORIES'];
+
+  const subcategories = {
+    ELECTRONICS: ['Smartphones', 'Laptops', 'Tablets', 'Accessories', 'Audio'],
+    CLOTHING: ['Men\'s Wear', 'Women\'s Wear', 'Kids\' Wear', 'Shoes', 'Accessories'],
+    'HOME APPLIANCES': ['Kitchen', 'Laundry', 'Cleaning', 'Heating', 'Cooling'],
+    GROCERY: ['Fruits & Vegetables', 'Dairy', 'Bakery', 'Beverages', 'Snacks'],
+    ACCESSORIES: ['Jewelry', 'Bags', 'Watches', 'Sunglasses', 'Hats']
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -30,14 +39,11 @@ const Shop = () => {
       if (minPrice) params.minPrice = minPrice;
       if (maxPrice) params.maxPrice = maxPrice;
       if (search) params.search = search;
+      if (selectedSubcategory) params.subcategory = selectedSubcategory;
 
       if (selectedCategory !== 'ALL') {
         url = `${import.meta.env.VITE_API_BASE_URL}/api/products/category/${encodeURIComponent(selectedCategory)}`;
-      } else {
-        if (sortBy) params.sort = sortBy;
-        if (minPrice) params.minPrice = minPrice;
-        if (maxPrice) params.maxPrice = maxPrice;
-        if (search) params.search = search;
+        if (selectedSubcategory) params.subcategory = selectedSubcategory;
       }
 
       const response = await axios.get(url, { params });
@@ -53,10 +59,16 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [selectedCategory, sortBy, minPrice, maxPrice, search, currentPage]);
+  }, [selectedCategory, selectedSubcategory, sortBy, minPrice, maxPrice, search, currentPage]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+    setSelectedSubcategory(''); // Reset subcategory when category changes
+    setCurrentPage(1);
+  };
+
+  const handleSubcategoryChange = (subcategory) => {
+    setSelectedSubcategory(subcategory);
     setCurrentPage(1);
   };
 
@@ -114,6 +126,35 @@ const Shop = () => {
             </button>
           ))}
         </div>
+
+        {/* Subcategory Pills */}
+        {selectedCategory !== 'ALL' && subcategories[selectedCategory] && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            <button
+              onClick={() => handleSubcategoryChange('')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                selectedSubcategory === ''
+                  ? 'bg-gray-600 text-white'
+                  : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+              }`}
+            >
+              All {selectedCategory}
+            </button>
+            {subcategories[selectedCategory].map((subcategory) => (
+              <button
+                key={subcategory}
+                onClick={() => handleSubcategoryChange(subcategory)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedSubcategory === subcategory
+                    ? 'bg-gray-600 text-white'
+                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                }`}
+              >
+                {subcategory}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Filters and Sort */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">

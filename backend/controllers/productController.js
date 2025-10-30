@@ -36,11 +36,12 @@ const upload = multer({
 export const uploadImages = upload.array("images", 10); // Allow up to 10 images
 
 export const getProducts = async (req, res) => {
-  const { category, brand, minPrice, maxPrice, search, featured, page = 1, limit = 10, sort } = req.query;
+  const { category, subcategory, brand, minPrice, maxPrice, search, featured, page = 1, limit = 10, sort } = req.query;
 
   let query = {};
 
   if (category) query.category = category;
+  if (subcategory) query.subcategory = subcategory;
   if (brand) query.brand = brand;
   if (featured === 'true') query.isFeatured = true;
   if (minPrice || maxPrice) {
@@ -82,6 +83,7 @@ export const createProduct = async (req, res) => {
   const {
     name,
     category,
+    subcategory,
     brand,
     price,
     discountedPrice,
@@ -96,6 +98,7 @@ export const createProduct = async (req, res) => {
   const product = await Product.create({
     name,
     category,
+    subcategory,
     brand,
     price,
     discountedPrice,
@@ -122,11 +125,12 @@ export const deleteProduct = async (req, res) => {
 
 export const getProductsByCategory = async (req, res) => {
   const { category } = req.params;
-  const { page = 1, limit = 10, sort, minPrice, maxPrice, search, brand, featured } = req.query;
+  const { page = 1, limit = 10, sort, minPrice, maxPrice, search, brand, featured, subcategory } = req.query;
 
   // Build query starting from category match
   let query = { category: { $regex: category, $options: 'i' } };
 
+  if (subcategory) query.subcategory = subcategory;
   if (brand) query.brand = brand;
   if (featured === 'true') query.isFeatured = true;
 
