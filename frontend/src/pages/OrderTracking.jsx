@@ -73,15 +73,25 @@ const OrderTracking = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-2xl mx-auto text-center">
-        <h1 className="text-3xl font-light text-gray-900 mb-6">
-          Track Your Order
-        </h1>
+    <div className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,.15)_1px,transparent_0)] bg-[length:24px_24px]"></div>
+
+      <div className="relative max-w-4xl mx-auto px-4 py-20">
+        <div className="bg-white shadow-xl rounded-3xl p-8 md:p-12 max-w-2xl mx-auto text-center border border-gray-100">
+          <div className="mb-8">
+            <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+              Order Tracking
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent tracking-tight leading-tight mb-6">
+              Track Your Order
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8"></div>
+          </div>
 
         <form onSubmit={handleTrackOrder} className="mt-6">
-          <div className="mb-4">
-            <label htmlFor="trackingNumber" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-6">
+            <label htmlFor="trackingNumber" className="block text-sm font-medium text-gray-700 mb-3">
               Order Tracking Number
             </label>
             <input
@@ -89,27 +99,27 @@ const OrderTracking = () => {
               type="text"
               value={trackingNumber}
               onChange={(e) => setTrackingNumber(e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black ${
+              className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                 error ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter your order tracking number (e.g., JAM202500001)"
               disabled={loading}
               required
             />
-            <p className={`mt-1 text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
+            <p className={`mt-2 text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
               {error || "Enter the tracking number provided in your order confirmation"}
             </p>
           </div>
 
           <button
             type="submit"
-            className={`w-full py-2 px-4 bg-black text-white font-medium uppercase tracking-widest hover:bg-gray-800 transition duration-200 rounded-md ${
+            className={`w-full py-3 px-6 bg-black text-white font-semibold uppercase tracking-widest hover:bg-gray-900 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300 rounded-xl border border-gray-800 ${
               loading || !trackingNumber.trim() ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={loading || !trackingNumber.trim()}
           >
             {loading ? (
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-3">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Tracking...</span>
               </div>
@@ -120,44 +130,50 @@ const OrderTracking = () => {
         </form>
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-800">{error}</p>
+          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <p className="text-red-800 font-medium">{error}</p>
           </div>
         )}
 
         {orderStatus && (
           <div className="mt-8">
-            <div className="text-6xl mb-4">{orderStatus.emoji || '📦'}</div>
+            <div className="text-6xl mb-6">{orderStatus.emoji || '📦'}</div>
 
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {orderStatus.message || 'Status not available'}
             </h2>
 
-            <div className="mt-4 mb-6">
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="mt-6 mb-8">
+              <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
-                  className="bg-green-500 h-2.5 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500 shadow-sm"
                   style={{ width: `${orderStatus.progress || 0}%` }}
                 ></div>
               </div>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-3 text-sm font-medium text-gray-700">
                 {orderStatus.progress || 0}% Complete
               </p>
             </div>
 
-            <div className="mt-4 text-left">
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Order Status:</span> {orderStatus.status || 'Unknown'}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Order Created:</span> {formatDate(orderStatus.createdAt)}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Last Updated:</span> {formatDate(orderStatus.updatedAt)}
-              </p>
+            <div className="mt-6 bg-gray-50 rounded-xl p-6 text-left">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center md:text-left">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Order Status</p>
+                  <p className="text-gray-900 font-medium">{orderStatus.status || 'Unknown'}</p>
+                </div>
+                <div className="text-center md:text-left">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Order Created</p>
+                  <p className="text-gray-900 font-medium">{formatDate(orderStatus.createdAt)}</p>
+                </div>
+                <div className="text-center md:text-left">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Last Updated</p>
+                  <p className="text-gray-900 font-medium">{formatDate(orderStatus.updatedAt)}</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

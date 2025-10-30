@@ -70,18 +70,27 @@ const NewArrivalProducts = () => {
 
   // --- Main Rendered Component ---
   return (
-    <section className="py-16 px-4 bg-white">
-      <div className="max-w-6xl mx-auto">
-        
+    <section className="py-20 px-4 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,.05)_1px,transparent_0)] bg-[length:20px_20px]"></div>
+
+      <div className="relative max-w-7xl mx-auto">
+
         {/* Title and Description */}
-        <div className="text-center mb-10">
-          <h2 className="text-4xl font-light text-gray-900 mb-2">New Arrivals</h2>
-          <p className="text-sm text-gray-500 max-w-xl mx-auto leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Scelerisque duis ultrices sollicitudin aliquam sem. Scelerisque duis ultrices sollicitudin
+        <div className="text-center mb-16">
+          <div className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
+            Latest Collection
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            New Arrivals
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Discover our latest collection of premium products. From cutting-edge technology to timeless fashion, find everything you need in one place.
           </p>
         </div>
+
         {/* Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}

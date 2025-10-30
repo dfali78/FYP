@@ -63,10 +63,13 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white py-4 shadow-sm relative">
-      <div className="container mx-auto flex justify-between items-center px-6">
+    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-white via-blue-50 to-purple-50 shadow-lg backdrop-blur-md bg-opacity-95 z-[300]">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,.05)_1px,transparent_0)] bg-[length:20px_20px]"></div>
+
+      <div className="relative container mx-auto flex justify-between items-center px-6 py-6">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-serif font-semibold text-gray-800" onClick={closeMenu}>
+        <Link to="/" className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300" onClick={closeMenu}>
           JAM Store
         </Link>
 
@@ -86,7 +89,7 @@ const Navbar = () => {
             </button>
             {isShopDropdownOpen && (
               <div
-                className="absolute top-full left-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 z-50 min-w-48"
+                className="absolute top-full left-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 z-[100] min-w-48"
                 onMouseEnter={() => setIsShopDropdownOpen(true)}
                 onMouseLeave={() => setIsShopDropdownOpen(false)}
               >
@@ -100,7 +103,7 @@ const Navbar = () => {
                       {category.label}
                     </Link>
                     {category.subcategories.length > 0 && (
-                      <div className="absolute left-full top-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 min-w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
+                      <div className="absolute left-full top-0 bg-white shadow-lg border border-gray-200 rounded-md py-2 min-w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-[101]">
                         {category.subcategories.map((subcategory) => (
                           <Link
                             key={subcategory}

@@ -187,15 +187,15 @@ const ProductManagement = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-2xl font-light text-gray-900">Product Management</h2>
-          <p className="text-sm text-gray-600 mt-1">Showing {products.length} of {totalProducts} products</p>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Product Management</h2>
+          <p className="text-lg text-gray-600 mt-2">Showing {products.length} of {totalProducts} products</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
         >
           {showForm ? 'Cancel' : 'Add Product'}
         </button>

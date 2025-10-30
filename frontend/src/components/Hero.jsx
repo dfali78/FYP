@@ -8,40 +8,37 @@ const Hero = () => {
   const slides = [
     {
       id: 1,
-      productId: "apple-watch-ultra-2",
+      category: "ELECTRONICS",
       title: "Apple Watch Ultra 2",
       subtitle: "ELECTRONICS SALE",
       description:
         "The most rugged and capable Apple Watch pushes the limits again. Featuring the all-new S9 SiP.",
       image: "/assets/apple-watch.png",
       primaryButton: "Shop Now",
-      secondaryButton: "Learn More",
       gradientOverlay: "from-blue-600/30 via-purple-600/30 to-pink-600/30",
       accentGradient: "from-cyan-400 to-blue-500"
     },
     {
       id: 2,
-      productId: "nike-air-max",
+      category: "CLOTHING",
       title: "Nike Air Max 270",
       subtitle: "CLOTHING ESSENTIALS",
       description:
         "Experience ultimate comfort and style with the iconic Air Max cushioning. Perfect for everyday wear.",
       image: "/assets/nike.png",
       primaryButton: "Shop Now",
-      secondaryButton: "Learn More",
       gradientOverlay: "from-emerald-600/30 via-teal-600/30 to-cyan-600/30",
       accentGradient: "from-emerald-400 to-teal-500"
     },
     {
       id: 3,
-      productId: "kitchenaid-mixer",
+      category: "HOME APPLIANCES",
       title: "KitchenAid Stand Mixer",
       subtitle: "HOME APPLIANCES",
       description:
         "Professional-grade power and versatility for all your baking and cooking needs. A kitchen essential.",
       image: "/assets/kitchen.png",
       primaryButton: "Shop Now",
-      secondaryButton: "Learn More",
       gradientOverlay: "from-rose-600/30 via-pink-600/30 to-purple-600/30",
       accentGradient: "from-rose-400 to-pink-500"
     },
@@ -83,13 +80,10 @@ const Hero = () => {
               </p>
               <div className="flex justify-center md:justify-start gap-4 pt-4">
                 <button
-                  onClick={() => navigate(`/product/${slide.productId}`)}
+                  onClick={() => navigate(`/shop?category=${slide.category}`)}
                   className={`bg-gradient-to-r ${slide.accentGradient} hover:opacity-90 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transform hover:scale-105 transition-all duration-300`}
                 >
                   {slide.primaryButton}
-                </button>
-                <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl font-semibold border border-white/20 backdrop-blur-md transition-all duration-300">
-                  {slide.secondaryButton}
                 </button>
               </div>
             </div>

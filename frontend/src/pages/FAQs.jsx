@@ -75,23 +75,32 @@ const FAQs = () => {
       {/* FAQ Section */}
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-3xl mx-auto">
-          <div className="space-y-4">
+          <div className="space-y-6">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md">
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border border-gray-100 overflow-hidden"
+              >
                 <button
-                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 focus:outline-none focus:bg-gray-50"
+                  className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"
                   onClick={() => toggleFAQ(index)}
                 >
-                  <span className="text-lg font-medium text-gray-900">{faq.question}</span>
-                  <span className="text-2xl text-gray-500">
-                    {openFAQ === index ? '−' : '+'}
+                  <span className="text-xl font-semibold text-gray-900 leading-tight">{faq.question}</span>
+                  <span className="ml-4 flex-shrink-0 transition-transform duration-300 ease-in-out" style={{ transform: openFAQ === index ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </span>
                 </button>
-                {openFAQ === index && (
-                  <div className="px-6 pb-4">
-                    <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    openFAQ === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="px-8 pb-6 pt-2">
+                    <p className="text-gray-700 leading-relaxed text-lg">{faq.answer}</p>
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
