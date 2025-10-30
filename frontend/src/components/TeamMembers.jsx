@@ -38,7 +38,7 @@ const TeamMembers = () => {
               />
               <h3 className="text-xl font-medium text-gray-800 mb-2">{member.name}</h3>
               <p className="text-gray-600 mb-1"><strong>Roll Number:</strong> {member.rollNumber}</p>
-              <p className="text-gray-600 mb-1"><strong>Age:</strong> {member.age}</p>
+            
               <p className="text-gray-600"><strong>Contribution:</strong> {member.contribution}</p>
             </div>
           ))}
